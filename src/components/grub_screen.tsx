@@ -12,7 +12,7 @@ export default function GrubScreen(props: {
   screenSize: { width: number; height: number };
 }) {
   function getScreenStyle(): CSSProperties {
-    var style: CSSProperties = {};
+    const style: CSSProperties = {};
     style.position = "relative";
     style.width = props.screenSize.width;
     style.height = props.screenSize.height;

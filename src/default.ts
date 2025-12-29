@@ -1,6 +1,6 @@
 import { type Font } from "./types.js";
 
-let DefaultFont: Font = {
+const DefaultFont: Font = {
   family: "Arial",
   style: "normal",
   weight: "normal",
