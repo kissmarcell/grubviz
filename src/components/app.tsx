@@ -1,10 +1,10 @@
-import { calculateScreenSize, parseGrubTheme } from '../helper.js';
-import GrubScreen from './grub_screen.js';
-import { useState, useMemo } from 'react';
+import { calculateScreenSize, parseGrubTheme } from "../helper.js";
+import GrubScreen from "./grub_screen.js";
+import { useState, useMemo } from "react";
 
 export default function App() {
-    const osEntriesArray = ['Fedora', 'Ubuntu', 'Windows 10', 'Memtest86+'];
-    const configurationText = `# Global Property
+  const osEntriesArray = ["Fedora", "Ubuntu", "Windows 10", "Memtest86+"];
+  const configurationText = `# Global Property
 title-text: ""
 desktop-image: "https://raw.githubusercontent.com/catppuccin/grub/refs/heads/main/src/catppuccin-mocha-grub-theme/background.png"
 desktop-image-scale-method: "stretch"
@@ -51,30 +51,73 @@ terminal-border: "0"
     text = "Booting in %d seconds"
     color = "#CDD6F4"
 }`;
-    const screenSizeOptions = useMemo(() => ['800x600', '640x480', '1024x768', `${screen.width}x${screen.height}`], []);
+  const screenSizeOptions = useMemo(
+    () => [
+      "800x600",
+      "640x480",
+      "1024x768",
+      `${screen.width}x${screen.height}`,
+    ],
+    [],
+  );
 
+  const [configuration, setConfiguration] = useState(configurationText);
+  const [osEntries, setOsEntries] = useState(osEntriesArray);
+  const [screenSize, setScreenSize] = useState(screenSizeOptions[0]);
 
-    const [configuration, setConfiguration] = useState(configurationText);
-    const [osEntries, setOsEntries] = useState(osEntriesArray);
-    const [screenSize, setScreenSize] = useState(screenSizeOptions[0]);
-
-    return <>
-        <header>GRUB Theme Visualizer — drop a theme file or load sample</header>
-        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-            <div id="controls" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                <label className="small">GRUB configuration:</label>
-                <textarea id="configuration" rows={20} cols={40} value={configuration} onChange={e => setConfiguration(e.target.value)}></textarea>
-                <label className="small">OS Entries (one per line):</label>
-                <textarea id="osEntries" rows={4} value={osEntries.join('\n')} onChange={e => setOsEntries(e.target.value.split('\n'))}></textarea>
-                <label className="small">Screen:</label>
-                <select id="screenSize" value={screenSize} onChange={e => setScreenSize(e.target.value)}>
-                    {screenSizeOptions.map(size => (
-                        <option key={size} value={size}>{size}</option>
-                    ))}
-                </select>
-            </div>
-
-            <GrubScreen theme={parseGrubTheme(configuration)} osEntries={osEntries} screenSize={calculateScreenSize(screenSize)} />
+  return (
+    <>
+      <header>GRUB Theme Visualizer — drop a theme file or load sample</header>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
+        <div
+          id="controls"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+          }}
+        >
+          <label className="small">GRUB configuration:</label>
+          <textarea
+            id="configuration"
+            rows={20}
+            cols={40}
+            value={configuration}
+            onChange={(e) => setConfiguration(e.target.value)}
+          ></textarea>
+          <label className="small">OS Entries (one per line):</label>
+          <textarea
+            id="osEntries"
+            rows={4}
+            value={osEntries.join("\n")}
+            onChange={(e) => setOsEntries(e.target.value.split("\n"))}
+          ></textarea>
+          <label className="small">Screen:</label>
+          <select
+            id="screenSize"
+            value={screenSize}
+            onChange={(e) => setScreenSize(e.target.value)}
+          >
+            {screenSizeOptions.map((size) => (
+              <option key={size} value={size}>
+                {size}
+              </option>
+            ))}
+          </select>
         </div>
-    </>;
+
+        <GrubScreen
+          theme={parseGrubTheme(configuration)}
+          osEntries={osEntries}
+          screenSize={calculateScreenSize(screenSize)}
+        />
+      </div>
+    </>
+  );
 }

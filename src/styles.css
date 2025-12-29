@@ -1,48 +1,54 @@
 :root {
-    --screen-w: 800px;
-    --screen-h: 480px
+  --screen-w: 800px;
+  --screen-h: 480px;
 }
 
 body {
-    font-family: system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-    margin: 16px;
-    color: #222
+  font-family:
+    system-ui,
+    Segoe UI,
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+  margin: 16px;
+  color: #222;
 }
 
 header {
-    font-size: 18px;
-    margin-bottom: 8px
+  font-size: 18px;
+  margin-bottom: 8px;
 }
 
 #controls {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    margin-bottom: 12px
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
 }
 
 #grub-screen {
-    width: var(--screen-w);
-    height: var(--screen-h);
-    background: #222;
-    background-size: cover;
-    overflow: hidden;
-    position: relative;
-    border-radius: 6px;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3)
+  width: var(--screen-w);
+  height: var(--screen-h);
+  background: #222;
+  background-size: cover;
+  overflow: hidden;
+  position: relative;
+  border-radius: 6px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
 }
 
 #screen-inner {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 20px
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px;
 }
 
 .small {
-    font-size: 13px;
-    color: #555
+  font-size: 13px;
+  color: #555;
 }
