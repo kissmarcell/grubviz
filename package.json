@@ -1,0 +1,24 @@
+{
+  "name": "grubviz",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "vite build",
+    "start": "vite dev"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "prettier": "^3.7.4",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.0"
+  },
+  "dependencies": {
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3"
+  }
+}
