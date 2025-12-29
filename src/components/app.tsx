@@ -1,5 +1,5 @@
-import { calculateScreenSize, parseGrubTheme } from "../helper.js";
-import GrubScreen from "./grub_screen.js";
+import { calculateScreenSize, parseGrubTheme } from "@/helper.js";
+import GrubScreen from "@/components/grub_screen.js";
 import { useState, useMemo } from "react";
 
 export default function App() {

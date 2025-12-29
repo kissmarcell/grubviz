@@ -1,4 +1,4 @@
-import { type Font } from "./types.js";
+import { type Font } from "@/types.js";
 
 const DefaultFont: Font = {
   family: "Arial",

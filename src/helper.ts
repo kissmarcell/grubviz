@@ -1,4 +1,4 @@
-import { type Font, type ThemeArray, type ComponentHolder } from "./types.js";
+import { type Font, type ThemeArray, type ComponentHolder } from "@/types.js";
 
 function resolvePosition(
   value: string | number,

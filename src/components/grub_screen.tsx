@@ -1,10 +1,10 @@
-import { type ThemeArray } from "../types.js";
-import Label from "./label.js";
-import Image from "./image.js";
-import BootMenu from "./bootmenu.js";
+import { type ThemeArray } from "@/types.js";
+import Label from "@/components/label.js";
+import Image from "@/components/image.js";
+import BootMenu from "@/components/bootmenu.js";
 import type { CSSProperties } from "react";
-import { parseGrubFont } from "../helper.js";
-import { DefaultFont } from "../default.js";
+import { parseGrubFont } from "@/helper.js";
+import { DefaultFont } from "@/default.js";
 
 export default function GrubScreen(props: {
   theme: ThemeArray;
@@ -90,7 +90,7 @@ function InnerScreen(props: {
           color={props.theme.globals.title_color}
         />
       )}
-      {props.theme.components.map((component, index) => {
+      {props.theme.components.map((component) => {
         const id = component.properties.id ?? `comp${component.order}`;
         switch (component.type.toLowerCase()) {
           case "label":

@@ -1,6 +1,6 @@
-import { Global } from "./components.js";
-import Image from "./components/image.js";
-import Label from "./components/label.js";
+import { Global } from "@/components.js";
+import Image from "@/components/image.js";
+import Label from "@/components/label.js";
 
 type CommonParams = {
   left?: number | string;

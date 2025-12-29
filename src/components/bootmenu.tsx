@@ -199,10 +199,9 @@ class BootMenu2 {
   }
 }
 
-import { resolvePosition } from "../helper.js";
-import { type CommonParams, type Font } from "../types.js";
-import { parseGrubFont } from "../helper.js";
-import { DefaultFont } from "../default.js";
+import { type CommonParams, type Font } from "@/types.js";
+import { parseGrubFont, resolvePosition } from "@/helper.js";
+import { DefaultFont } from "@/default.js";
 import { useEffect, useState, type ReactNode } from "react";
 
 export default function BootMenu(

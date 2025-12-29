@@ -1,5 +1,5 @@
 import { createRoot } from "react-dom/client";
-import App from "./components/app.js";
+import App from "@/components/app.js";
 
 // GRUB theme visualizer script
 const domRoot = document.getElementById("app");

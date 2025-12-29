@@ -1,6 +1,6 @@
-import { type CommonParams } from "../types.js";
-import { resolvePosition, parseGrubFont } from "../helper.js";
-import { DefaultFont } from "../default.js";
+import { type CommonParams } from "@/types.js";
+import { resolvePosition, parseGrubFont } from "@/helper.js";
+import { DefaultFont } from "@/default.js";
 import { useEffect, useState } from "react";
 
 export default function Label(

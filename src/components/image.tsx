@@ -1,5 +1,5 @@
-import { resolvePosition } from "../helper.js";
-import { type CommonParams } from "../types.js";
+import { resolvePosition } from "@/helper.js";
+import { type CommonParams } from "@/types.js";
 
 export default function Image(props: CommonParams & { file?: string }) {
   return (
