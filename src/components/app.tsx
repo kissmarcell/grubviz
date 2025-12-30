@@ -1,56 +1,11 @@
 import { calculateScreenSize, parseGrubTheme } from "@/helper.js";
 import GrubScreen from "@/components/grub_screen.js";
 import { useState, useMemo } from "react";
+// @ts-expect-error raw import
+import configurationText from "@/assets/theme.example.txt?raw";
+import osEntriesArray from "@/assets/os_entries.example.json" with { type: "json" };
 
 export default function App() {
-  const osEntriesArray = ["Fedora", "Ubuntu", "Windows 10", "Memtest86+"];
-  const configurationText = `# Global Property
-title-text: ""
-desktop-image: "https://raw.githubusercontent.com/catppuccin/grub/refs/heads/main/src/catppuccin-mocha-grub-theme/background.png"
-desktop-image-scale-method: "stretch"
-desktop-color: "#1E1E2E"
-terminal-font: "Unifont Regular 16"
-terminal-left: "0"
-terminal-top: "0"
-terminal-width: "100%"
-terminal-height: "100%"
-terminal-border: "0"
-
-# Logo image
-+ image {
-    left = 50%-80
-    top = 30%-80
-    file = "https://em-content.zobj.net/source/apple/354/shaking-face_1fae8.png"
-}
-
-# Show the boot menu
-+ boot_menu {
-    left = 50%-240
-    top = 40%
-    width = 480
-    height = 30%
-    item_font = "Unifont Regular 16"
-    item_color = "#CDD6F4"
-    selected_item_color = "#CDD6F4"
-    icon_width = 32
-    icon_height = 32
-    item_icon_space = 20
-    item_height = 36
-    item_padding = 5
-    item_spacing = 10
-    #selected_item_pixmap_style = "select_*.png"
-}
-
-# Show a countdown message using the label component
-+ label {
-    top = 82%
-    left = 35%
-    width = 30%
-    align = "center"
-    id = "__timeout__"
-    text = "Booting in %d seconds"
-    color = "#CDD6F4"
-}`;
   const screenSizeOptions = useMemo(
     () => [
       "800x600",
