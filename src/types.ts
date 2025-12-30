@@ -1,6 +1,30 @@
-import { Global } from "@/components.js";
-import Image from "@/components/image.js";
-import Label from "@/components/label.js";
+type Globals = {
+  title_text?: string;
+  title_font?: string;
+  title_color?: string;
+  /** unused */
+  message_font?: string;
+  /** unused */
+  message_color?: string;
+  /** unused */
+  message_bg_color?: string;
+  desktop_image?: string;
+  desktop_image_scale_method?:
+    | "stretch"
+    | "crop"
+    | "padding"
+    | "fitwidth"
+    | "fitheight";
+  desktop_image_h_align?: "left" | "center" | "right";
+  desktop_image_v_align?: "top" | "center" | "bottom";
+  desktop_color?: string;
+  terminal_box?: string;
+  terminal_border?: string;
+  terminal_left?: number;
+  terminal_top?: number;
+  terminal_width?: number;
+  terminal_height?: number;
+};
 
 type CommonParams = {
   left?: number | string;
@@ -19,7 +43,7 @@ type Font = {
 };
 
 type ThemeArray = {
-  globals: { [key: string]: any };
+  globals: Globals;
   components: ComponentHolder[];
 };
 
@@ -29,18 +53,10 @@ type ComponentHolder = {
   properties: { [key: string]: string };
 };
 
-type Theme = {
-  globals: Global;
-  components: Component[];
-};
-
-type Component = typeof Label | typeof Image;
-
 export {
   type CommonParams,
   type Font,
-  type Theme,
   type ComponentHolder,
-  type Component,
   type ThemeArray,
+  type Globals,
 };

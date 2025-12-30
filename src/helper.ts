@@ -45,7 +45,7 @@ function parseGrubTheme(text: string): ThemeArray {
   const lines = text.split("\n");
   const theme: ThemeArray = {
     globals: {},
-    components: [] as ComponentHolder[],
+    components: [],
   };
   let currentComponent: ComponentHolder | null = null;
   let counter = 0;
