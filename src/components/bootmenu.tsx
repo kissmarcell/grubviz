@@ -55,12 +55,12 @@ class BootMenu2 {
     },
   ) {
     this.elements = props.elements;
-    this.item_font = props.item_font
-      ? parseGrubFont(props.item_font)
-      : DefaultFont;
-    this.selected_item_font = props.selected_item_font
-      ? parseGrubFont(props.selected_item_font)
-      : DefaultFont;
+    //this.item_font = props.item_font
+    //  ? parseGrubFont(props.item_font)
+    //  : DefaultFont;
+    //this.selected_item_font = props.selected_item_font
+    //  ? parseGrubFont(props.selected_item_font)
+    //  : parseGrubFont(props.item_font);
     this.item_color = props.item_color;
     this.selected_item_color = props.selected_item_color;
     this.icon_width = props.icon_width;
@@ -201,7 +201,6 @@ class BootMenu2 {
 
 import { type CommonParams, type Font } from "@/types.js";
 import { parseGrubFont, resolvePosition } from "@/helper.js";
-import { DefaultFont } from "@/default.js";
 import { useEffect, useState, type ReactNode } from "react";
 
 export default function BootMenu(
@@ -232,10 +231,10 @@ export default function BootMenu(
     visible?: string;
   },
 ) {
-  const font = props.item_font ? parseGrubFont(props.item_font) : DefaultFont;
-  const selectedFont = props.selected_item_font
-    ? parseGrubFont(props.selected_item_font)
-    : DefaultFont;
+  const font = parseGrubFont(props.item_font);
+  const selectedFont = parseGrubFont(
+    props.selected_item_font ?? props.item_font,
+  );
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   useEffect(() => {
@@ -308,6 +307,7 @@ function BootMenuItem(props: {
         fontSize: props.font?.size,
         fontStyle: props.font?.style,
         fontWeight: props.font?.weight,
+        fontFamily: props.font?.family,
       }}
     >
       {props.pixmapStyle ? (
@@ -324,6 +324,7 @@ function BootMenuItem(props: {
               fontSize: props.font?.size,
               fontStyle: props.font?.style,
               fontWeight: props.font?.weight,
+              fontFamily: props.font?.family,
             }}
           >
             {props.children}

@@ -31,7 +31,8 @@ function resolvePosition(
   return result;
 }
 
-function parseGrubFont(font: string): Font {
+function parseGrubFont(font?: string): Font | undefined {
+  if (!font) return undefined;
   const parts = font.split(" ");
   const size = parseInt(parts.pop()!, 10);
   const style = /italic/i.test(font) ? "italic" : "normal";

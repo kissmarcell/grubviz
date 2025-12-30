@@ -4,7 +4,6 @@ import Image from "@/components/image.js";
 import BootMenu from "@/components/bootmenu.js";
 import type { CSSProperties } from "react";
 import { parseGrubFont } from "@/helper.js";
-import { DefaultFont } from "@/default.js";
 
 export default function GrubScreen(props: {
   theme: ThemeArray;
@@ -129,15 +128,16 @@ function InnerScreen(props: {
   );
 }
 
-function Title(props: { text: string; font: string; color: string }) {
-  const font = props.font ? parseGrubFont(props.font) : DefaultFont;
+function Title(props: { text?: string; font?: string; color?: string }) {
+  const font = parseGrubFont(props.font);
   return (
     <div
       style={{
         color: props.color,
-        fontSize: font.size,
-        fontStyle: font.style,
-        fontWeight: font.weight,
+        fontSize: font?.size,
+        fontStyle: font?.style,
+        fontWeight: font?.weight,
+        fontFamily: font?.family,
       }}
     >
       {props.text}

@@ -1,6 +1,5 @@
 import { type CommonParams } from "@/types.js";
 import { resolvePosition, parseGrubFont } from "@/helper.js";
-import { DefaultFont } from "@/default.js";
 import { useEffect, useState } from "react";
 
 export default function Label(
@@ -12,7 +11,7 @@ export default function Label(
     visible?: string;
   },
 ) {
-  const font = props.font ? parseGrubFont(props.font) : DefaultFont;
+  const font = parseGrubFont(props.font);
   const [text, setText] = useState(props.text ?? "");
 
   useEffect(() => {
@@ -37,9 +36,10 @@ export default function Label(
         position: "absolute",
         left: resolvePosition(props.left ?? 0, props.screenSize.width),
         top: resolvePosition(props.top ?? 0, props.screenSize.height),
-        fontSize: font.size,
-        fontStyle: font.style,
-        fontWeight: font.weight,
+        fontSize: font?.size,
+        fontStyle: font?.style,
+        fontWeight: font?.weight,
+        fontFamily: font?.family,
         color: props.color,
         textAlign: props.align,
         display: props.visible !== "false" ? "block" : "none",
