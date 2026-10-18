@@ -27,7 +27,7 @@ export default function App() {
         style={{
           display: "flex",
           flexDirection: "row",
-          justifyContent: "space-between",
+          justifyContent: "space-around",
         }}
       >
         <div
@@ -40,14 +40,16 @@ export default function App() {
         >
           <label className="small">GRUB configuration:</label>
           <textarea
+            style={{ backgroundColor: "#9e9e9eff" }}
             id="configuration"
-            rows={20}
-            cols={40}
+            rows={30}
+            cols={80}
             value={configuration}
             onChange={(e) => setConfiguration(e.target.value)}
           ></textarea>
           <label className="small">OS Entries (one per line):</label>
           <textarea
+            style={{ backgroundColor: "#9e9e9eff" }}
             id="osEntries"
             rows={4}
             value={osEntries.join("\n")}

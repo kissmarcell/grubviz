@@ -27,8 +27,9 @@ export default function GrubScreen(props: {
       style.backgroundImage = `url(${props.theme.globals.desktop_image})`;
       style.backgroundColor = "";
       if (props.theme.globals.desktop_image_scale_method === "stretch") {
-        style.backgroundSize = "100% 100%";
         style.backgroundPosition = "center center";
+        style.backgroundSize = "100%";
+        style.backgroundRepeat = "no-repeat";
       } else {
         switch (props.theme.globals.desktop_image_h_align) {
           case "left":

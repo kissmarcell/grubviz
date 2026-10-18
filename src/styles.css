@@ -12,7 +12,8 @@ body {
     Arial,
     sans-serif;
   margin: 16px;
-  color: #222;
+  color: #eee;
+  background-color: #343434;
 }
 
 header {
