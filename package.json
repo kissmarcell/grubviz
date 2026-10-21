@@ -6,7 +6,10 @@
   "main": "index.js",
   "scripts": {
     "build": "vite build",
-    "start": "vite dev"
+    "start": "vite dev",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src",
+    "format": "prettier --write src"
   },
   "author": "",
   "license": "ISC",
