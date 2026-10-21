@@ -3,13 +3,39 @@ import Label from "@/components/label.js";
 import Image from "@/components/image.js";
 import BootMenu from "@/components/bootmenu.js";
 import type { CSSProperties } from "react";
+import { useAssetResolver } from "@/asset_context.js";
 import { parseGrubFont } from "@/helper.js";
+
+const BACKGROUND_SIZES: Record<string, string> = {
+  stretch: "100% 100%",
+  crop: "cover",
+  padding: "contain",
+  fitwidth: "100% auto",
+  fitheight: "auto 100%",
+};
+const H_ALIGN: Record<string, string> = {
+  left: "left",
+  center: "center",
+  right: "right",
+};
+const V_ALIGN: Record<string, string> = {
+  top: "top",
+  center: "center",
+  bottom: "bottom",
+};
 
 export default function GrubScreen(props: {
   theme: ThemeArray;
   osEntries: string[];
   screenSize: { width: number; height: number };
 }) {
+  const resolveAsset = useAssetResolver();
+  const {
+    desktop_image_scale_method: scaleMethod = "stretch",
+    desktop_image_h_align: hAlign = "center",
+    desktop_image_v_align: vAlign = "center",
+  } = props.theme.globals;
+
   function getScreenStyle(): CSSProperties {
     const style: CSSProperties = {};
     style.position = "relative";
@@ -17,51 +43,19 @@ export default function GrubScreen(props: {
     style.height = props.screenSize.height;
     style.minWidth = style.width;
     style.minHeight = style.height;
+    style.overflow = "hidden";
+    const { desktop_image: image, desktop_color: color } = props.theme.globals;
+    style.backgroundColor = color || "#222";
     if (
-      props.theme.globals.desktop_image &&
-      (/^(https?:\/\/|\/|\.|data:)/i.test(props.theme.globals.desktop_image) ||
-        props.theme.globals.desktop_image.match(
-          /\.(png|jpg|jpeg|gif|webp)(\?.*)?$/i,
-        ))
+      image &&
+      (/^(https?:\/\/|\/|\.|data:)/i.test(image) ||
+        /\.(png|jpg|jpeg|gif|webp)(\?.*)?$/i.test(image))
     ) {
-      style.backgroundImage = `url(${props.theme.globals.desktop_image})`;
-      style.backgroundColor = "";
-      if (props.theme.globals.desktop_image_scale_method === "stretch") {
-        style.backgroundPosition = "center center";
-        style.backgroundSize = "100%";
-        style.backgroundRepeat = "no-repeat";
-      } else {
-        switch (props.theme.globals.desktop_image_h_align) {
-          case "left":
-            style.backgroundPositionX = "left";
-            break;
-          case "right":
-            style.backgroundPositionX = "right";
-            break;
-          default:
-            style.backgroundPositionX = "center";
-            break;
-        }
-        switch (props.theme.globals.desktop_image_v_align) {
-          case "top":
-            style.backgroundPositionY = "top";
-            break;
-          case "bottom":
-            style.backgroundPositionY = "bottom";
-            break;
-          default:
-            style.backgroundPositionY = "center";
-            break;
-        }
-      }
-    } else if (props.theme.globals.desktop_color) {
-      {
-        style.backgroundImage = "";
-        style.backgroundColor = props.theme.globals.desktop_color;
-      }
-    } else {
-      style.backgroundImage = "";
-      style.backgroundColor = "#222";
+      style.backgroundImage = `url(${resolveAsset(image)})`;
+      style.backgroundRepeat = "no-repeat";
+      style.backgroundSize = BACKGROUND_SIZES[scaleMethod] ?? "100% 100%";
+      style.backgroundPositionX = H_ALIGN[hAlign] ?? "center";
+      style.backgroundPositionY = V_ALIGN[vAlign] ?? "center";
     }
     return style;
   }
@@ -96,7 +90,7 @@ function InnerScreen(props: {
           case "label":
             return (
               <Label
-                key={id}
+                key={component.order}
                 id={id}
                 screenSize={props.screenSize}
                 {...component.properties}
@@ -105,7 +99,7 @@ function InnerScreen(props: {
           case "image":
             return (
               <Image
-                key={id}
+                key={component.order}
                 id={id}
                 screenSize={props.screenSize}
                 {...component.properties}
@@ -114,7 +108,7 @@ function InnerScreen(props: {
           case "boot_menu":
             return (
               <BootMenu
-                key={id}
+                key={component.order}
                 id={id}
                 elements={props.osEntries}
                 screenSize={props.screenSize}
@@ -122,7 +116,7 @@ function InnerScreen(props: {
               />
             );
           default:
-            return <></>;
+            return null;
         }
       })}
     </>
@@ -134,6 +128,10 @@ function Title(props: { text?: string; font?: string; color?: string }) {
   return (
     <div
       style={{
+        position: "absolute",
+        top: 0,
+        width: "100%",
+        textAlign: "center",
         color: props.color,
         fontSize: font?.size,
         fontStyle: font?.style,

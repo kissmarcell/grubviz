@@ -1,207 +1,39 @@
-class BootMenu2 {
-  elements: string[];
-  selected_index: number = 0;
-  children: HTMLElement[] = [];
-  item_font: Font;
-  selected_item_font: Font;
-  item_color: string;
-  selected_item_color: string;
-  icon_width: number;
-  icon_height: number;
-  item_height: number;
-  item_padding: number;
-  item_icon_space: number;
-  item_spacing: number;
-  menu_pixmap_style: string;
-  item_pixmap_style: string;
-  selected_item_pixmap_style: string;
-  scrollbar: string;
-  scrollbar_frame: string;
-  scrollbar_thumb: string;
-  scrollbar_thumb_overlay: string;
-  scrollbar_slice: number;
-  scrollbar_left_pad: number;
-  scrollbar_right_pad: number;
-  scrollbar_top_pad: number;
-  scrollbar_bottom_pad: number;
-  visible: boolean;
+import { type CommonParams, type Font } from "@/types.js";
+import { parseGrubFont, parseNumber, resolvePosition } from "@/helper.js";
+import { useAssetResolver } from "@/asset_context.js";
+import { useEffect, useState, type ReactNode } from "react";
 
-  constructor(
-    props: CommonParams & {
-      elements: string[];
-      item_font: string;
-      selected_item_font: string;
-      item_color: string;
-      selected_item_color: string;
-      icon_width: number;
-      icon_height: number;
-      item_height: number;
-      item_padding: number;
-      item_icon_space: number;
-      item_spacing: number;
-      menu_pixmap_style: string;
-      item_pixmap_style: string;
-      selected_item_pixmap_style: string;
-      scrollbar: string;
-      scrollbar_frame: string;
-      scrollbar_thumb: string;
-      scrollbar_thumb_overlay: string;
-      scrollbar_slice: number;
-      scrollbar_left_pad: number;
-      scrollbar_right_pad: number;
-      scrollbar_top_pad: number;
-      scrollbar_bottom_pad: number;
-      visible: string;
-    },
-  ) {
-    this.elements = props.elements;
-    //this.item_font = props.item_font
-    //  ? parseGrubFont(props.item_font)
-    //  : DefaultFont;
-    //this.selected_item_font = props.selected_item_font
-    //  ? parseGrubFont(props.selected_item_font)
-    //  : parseGrubFont(props.item_font);
-    this.item_color = props.item_color;
-    this.selected_item_color = props.selected_item_color;
-    this.icon_width = props.icon_width;
-    this.icon_height = props.icon_height;
-    this.item_height = props.item_height;
-    this.item_padding = props.item_padding;
-    this.item_icon_space = props.item_icon_space;
-    this.item_spacing = props.item_spacing;
-    this.menu_pixmap_style = props.menu_pixmap_style;
-    this.item_pixmap_style = props.item_pixmap_style;
-    this.selected_item_pixmap_style = props.selected_item_pixmap_style;
-    this.scrollbar = props.scrollbar;
-    this.scrollbar_frame = props.scrollbar_frame;
-    this.scrollbar_thumb = props.scrollbar_thumb;
-    this.scrollbar_thumb_overlay = props.scrollbar_thumb_overlay;
-    this.scrollbar_slice = props.scrollbar_slice;
-    this.scrollbar_left_pad = props.scrollbar_left_pad;
-    this.scrollbar_right_pad = props.scrollbar_right_pad;
-    this.scrollbar_top_pad = props.scrollbar_top_pad;
-    this.scrollbar_bottom_pad = props.scrollbar_bottom_pad;
-    this.visible = props.visible !== "false";
-  }
+const SLICE_ROWS = [
+  ["nw", "n", "ne"],
+  ["w", "c", "e"],
+  ["sw", "s", "se"],
+] as const;
 
-  createRow() {
-    var row = document.createElement("div");
-    row.style.display = "flex";
-    row.style.flexDirection = "row";
-    row.style.zIndex = "0";
-    return row;
-  }
+type Size = { width: number; height: number };
 
-  getNumberOfChildren() {
-    return this.children.length;
-  }
-
-  setSelectedIndex(index: number) {
-    this.selected_index = index;
-    this.children.forEach((it, i) => {
-      if (i === this.selected_index) {
-        it.style.color = this.selected_item_color;
-        it.style.fontSize = this.selected_item_font.size + "px";
-        it.style.fontStyle = this.selected_item_font.style;
-        it.style.fontWeight = this.selected_item_font.weight;
-      } else {
-        it.style.color = this.item_color;
-        it.style.fontSize = this.item_font.size + "px";
-        it.style.fontStyle = this.item_font.style;
-        it.style.fontWeight = this.item_font.weight;
-      }
-    });
-  }
-
-  createSlice(
-    parent: HTMLElement,
-    position: string,
-    width: number,
-    height: number,
-  ) {
-    const src = this.item_pixmap_style.replace("*", position);
-    const div = document.createElement("div");
-    div.style.width = width + "px";
-    div.style.height = height + "px";
-    div.style.backgroundImage = `url(${src})`;
-    div.style.backgroundSize = "100% 100%";
-    parent.appendChild(div);
-    return div;
-  }
-
-  render(parent: HTMLElement): void {
-    var div = document.createElement("div");
-    div.id = this.id;
-    div.style.left = resolvePosition(this.left, parent.offsetWidth) + "px";
-    div.style.top = resolvePosition(this.top, parent.offsetHeight) + "px";
-    div.style.width = this.width + "px";
-    div.style.height = this.height + "px";
-    div.style.position = "absolute";
-    div.style.display = this.visible ? "block" : "none";
-
-    this.elements.forEach((itemText, index) => {
-      var itemDiv = document.createElement("div");
-      itemDiv.style.color = this.item_color;
-      itemDiv.style.height = this.item_height + "px";
-      itemDiv.style.padding = this.item_padding + "px";
-      itemDiv.style.boxSizing = "border-box";
-      itemDiv.style.position = "relative";
-
-      if (this.item_pixmap_style) {
-        const cornerSize = 16;
-        const edgeWidth = 16;
-        const edgeHeight = 16;
-
-        const w = this.width;
-        const h = this.item_height;
-
-        var top = this.createRow();
-        var mid = this.createRow();
-        var bottom = this.createRow();
-        var text = document.createElement("div");
-        text.style.position = "absolute";
-        text.style.left = edgeHeight + "px";
-        text.style.top = 0 + "px";
-        text.style.fontSize = this.item_font.size + "px";
-        text.style.fontStyle = this.item_font.style;
-        text.style.fontWeight = this.item_font.weight;
-        text.style.zIndex = "1";
-        text.textContent = itemText;
-
-        this.createSlice(top, "nw", cornerSize, cornerSize);
-        this.createSlice(top, "n", w - 2 * cornerSize, edgeHeight);
-        this.createSlice(top, "ne", cornerSize, cornerSize);
-
-        this.createSlice(mid, "w", edgeWidth, h - 2 * cornerSize);
-        this.createSlice(mid, "c", w - 2 * cornerSize, h - 2 * edgeHeight);
-        this.createSlice(mid, "e", edgeWidth, h - 2 * cornerSize);
-
-        this.createSlice(bottom, "sw", cornerSize, cornerSize);
-        this.createSlice(bottom, "s", w - 2 * cornerSize, edgeHeight);
-        this.createSlice(bottom, "se", cornerSize, cornerSize);
-
-        itemDiv.appendChild(top);
-        itemDiv.appendChild(mid);
-        itemDiv.appendChild(bottom);
-        itemDiv.appendChild(text);
-      } else {
-        itemDiv.style.fontSize = this.item_font.size + "px";
-        itemDiv.style.fontStyle = this.item_font.style;
-        itemDiv.style.fontWeight = this.item_font.weight;
-        itemDiv.textContent = itemText;
-        itemDiv.style.zIndex = "1";
-      }
-
-      div.appendChild(itemDiv);
-      this.children.push(itemDiv);
-    });
-    parent.appendChild(div);
-  }
+/** Natural size of an image, undefined until it has loaded. */
+function useImageSize(url: string | undefined): Size | undefined {
+  const [size, setSize] = useState<{ url: string; size: Size }>();
+  useEffect(() => {
+    if (!url) return;
+    const img = new window.Image();
+    img.onload = () =>
+      setSize({
+        url,
+        size: { width: img.naturalWidth, height: img.naturalHeight },
+      });
+    img.src = url;
+  }, [url]);
+  return size && size.url === url ? size.size : undefined;
 }
 
-import { type CommonParams, type Font } from "@/types.js";
-import { parseGrubFont, resolvePosition } from "@/helper.js";
-import { useEffect, useState, type ReactNode } from "react";
+function isTypingTarget(target: EventTarget | null): boolean {
+  return (
+    target instanceof HTMLElement &&
+    (target.isContentEditable ||
+      ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName))
+  );
+}
 
 export default function BootMenu(
   props: CommonParams & {
@@ -210,12 +42,12 @@ export default function BootMenu(
     selected_item_font?: string;
     item_color?: string;
     selected_item_color?: string;
-    icon_width?: number;
-    icon_height?: number;
-    item_height?: number;
-    item_padding?: number;
-    item_icon_space?: number;
-    item_spacing?: number;
+    icon_width?: string;
+    icon_height?: string;
+    item_height?: string;
+    item_padding?: string;
+    item_icon_space?: string;
+    item_spacing?: string;
     menu_pixmap_style?: string;
     item_pixmap_style?: string;
     selected_item_pixmap_style?: string;
@@ -223,11 +55,11 @@ export default function BootMenu(
     scrollbar_frame?: string;
     scrollbar_thumb?: string;
     scrollbar_thumb_overlay?: string;
-    scrollbar_slice?: number;
-    scrollbar_left_pad?: number;
-    scrollbar_right_pad?: number;
-    scrollbar_top_pad?: number;
-    scrollbar_bottom_pad?: number;
+    scrollbar_slice?: string;
+    scrollbar_left_pad?: string;
+    scrollbar_right_pad?: string;
+    scrollbar_top_pad?: string;
+    scrollbar_bottom_pad?: string;
     visible?: string;
   },
 ) {
@@ -236,23 +68,37 @@ export default function BootMenu(
     props.selected_item_font ?? props.item_font,
   );
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const count = props.elements.length;
+  // keep the selection valid when the entry list shrinks
+  const activeIndex = count > 0 ? Math.min(selectedIndex, count - 1) : 0;
 
   useEffect(() => {
+    if (count === 0) return;
     const handler = (e: KeyboardEvent) => {
+      if (isTypingTarget(e.target)) return;
       if (e.key === "ArrowDown") {
-        setSelectedIndex((i) => (i + 1) % props.elements.length);
+        setSelectedIndex((i) => (Math.min(i, count - 1) + 1) % count);
         e.preventDefault();
       } else if (e.key === "ArrowUp") {
-        setSelectedIndex(
-          (i) => (i - 1 + props.elements.length) % props.elements.length,
-        );
+        setSelectedIndex((i) => (Math.min(i, count - 1) - 1 + count) % count);
         e.preventDefault();
       }
     };
 
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [props.elements.length]);
+  }, [count]);
+
+  const itemHeight = parseNumber(props.item_height);
+  const itemPadding = parseNumber(props.item_padding);
+  const itemSpacing = parseNumber(props.item_spacing) ?? 0;
+  // GRUB starts the text after the icon column: the icon itself (when icons
+  // are enabled by a non-zero icon size) plus item_icon_space
+  const iconWidth = parseNumber(props.icon_width) ?? 0;
+  const iconHeight = parseNumber(props.icon_height) ?? 0;
+  const textOffset =
+    (iconWidth > 0 && iconHeight > 0 ? iconWidth : 0) +
+    (parseNumber(props.item_icon_space) ?? 0);
 
   return (
     <div
@@ -261,21 +107,24 @@ export default function BootMenu(
         position: "absolute",
         left: resolvePosition(props.left ?? 0, props.screenSize.width),
         top: resolvePosition(props.top ?? 0, props.screenSize.height),
-        width: props.width,
-        height: props.height,
+        width: resolvePosition(props.width, props.screenSize.width),
+        height: resolvePosition(props.height, props.screenSize.height),
         display: props.visible !== "false" ? "block" : "none",
       }}
     >
       {props.elements.map((itemText, index) => {
+        const selected = index === activeIndex;
         return (
           <BootMenuItem
             key={index}
-            color={props.item_color}
-            height={props.item_height}
-            padding={props.item_padding}
-            font={index === selectedIndex ? selectedFont : font}
+            color={selected ? props.selected_item_color : props.item_color}
+            height={itemHeight}
+            padding={itemPadding}
+            spacing={itemSpacing}
+            textOffset={textOffset}
+            font={selected ? selectedFont : font}
             pixmapStyle={
-              index === selectedIndex
+              selected
                 ? props.selected_item_pixmap_style
                 : props.item_pixmap_style
             }
@@ -288,100 +137,114 @@ export default function BootMenu(
   );
 }
 
+type Insets = { left: number; top: number; right: number; bottom: number };
+
+/** Border sizes of a pixmap style, taken from its edge images like in GRUB. */
+function usePixmapInsets(pixmapStyle: string | undefined): Insets {
+  const resolveAsset = useAssetResolver();
+  const url = (position: string) =>
+    pixmapStyle ? resolveAsset(pixmapStyle.replace("*", position)) : undefined;
+  const w = useImageSize(url("w"));
+  const n = useImageSize(url("n"));
+  const e = useImageSize(url("e"));
+  const s = useImageSize(url("s"));
+  return {
+    left: w?.width ?? 0,
+    top: n?.height ?? 0,
+    right: e?.width ?? 0,
+    bottom: s?.height ?? 0,
+  };
+}
+
 function BootMenuItem(props: {
   children: ReactNode;
   color?: string;
   height?: number;
   padding?: number;
+  spacing: number;
+  textOffset: number;
   font?: Font;
   pixmapStyle?: string;
 }) {
+  const insets = usePixmapInsets(props.pixmapStyle);
+  const contentHeight = props.height ?? 0;
+  // like GRUB: the pixmap borders are added around the item content, rows
+  // are still item_height + item_spacing apart
+  const frameHeight = contentHeight + insets.top + insets.bottom;
   return (
     <div
       style={{
         position: "relative",
-        boxSizing: "border-box",
+        height: contentHeight + props.spacing,
         color: props.color,
-        height: props.height,
-        padding: props.padding,
         fontSize: props.font?.size,
         fontStyle: props.font?.style,
         fontWeight: props.font?.weight,
         fontFamily: props.font?.family,
       }}
     >
-      {props.pixmapStyle ? (
-        <>
-          <BootMenuItemRow position="top" pixmapStyle={props.pixmapStyle} />
-          <BootMenuItemRow position="middle" pixmapStyle={props.pixmapStyle} />
-          <BootMenuItemRow position="bottom" pixmapStyle={props.pixmapStyle} />
-          <div
-            style={{
-              position: "absolute",
-              left: 16,
-              top: 0,
-              zIndex: "1",
-              fontSize: props.font?.size,
-              fontStyle: props.font?.style,
-              fontWeight: props.font?.weight,
-              fontFamily: props.font?.family,
-            }}
-          >
-            {props.children}
-          </div>
-        </>
-      ) : (
-        props.children
+      {props.pixmapStyle && (
+        <BootMenuItemFrame
+          pixmapStyle={props.pixmapStyle}
+          insets={insets}
+          height={frameHeight}
+        />
       )}
+      <div
+        style={{
+          position: "absolute",
+          zIndex: 1,
+          left: insets.left + props.textOffset,
+          top: insets.top,
+          right: insets.right,
+          height: contentHeight,
+          boxSizing: "border-box",
+          padding: props.padding,
+          display: "flex",
+          alignItems: "center",
+          whiteSpace: "nowrap",
+        }}
+      >
+        {props.children}
+      </div>
     </div>
   );
 }
 
-function BootMenuItemRow(props: { position: string; pixmapStyle: string }) {
+/** 3x3 frame built from the "*"-templated slice images (nw, n, ne, ...). */
+function BootMenuItemFrame(props: {
+  pixmapStyle: string;
+  insets: Insets;
+  height: number;
+}) {
+  const resolveAsset = useAssetResolver();
+  const url = (position: string) =>
+    resolveAsset(props.pixmapStyle.replace("*", position));
+  const { left, top, right, bottom } = props.insets;
+
   return (
     <div
       style={{
-        display: "flex",
-        flexDirection: "row",
-        zIndex: "0",
+        position: "absolute",
+        left: 0,
+        top: 0,
+        right: 0,
+        height: props.height,
+        display: "grid",
+        gridTemplateColumns: `${left}px 1fr ${right}px`,
+        gridTemplateRows: `${top}px 1fr ${bottom}px`,
+        zIndex: 0,
       }}
     >
-      <BootMenuItemSlice
-        position={props.position}
-        width={16}
-        height={16}
-        src={props.pixmapStyle!}
-      />
-      <BootMenuItemSlice
-        position={props.position}
-        width={props.width - 32}
-        height={16}
-        src={props.pixmapStyle!}
-      />
-      <BootMenuItemSlice
-        position={props.position}
-        width={16}
-        height={16}
-        src={props.pixmapStyle!}
-      />
+      {SLICE_ROWS.flat().map((position) => (
+        <div
+          key={position}
+          style={{
+            backgroundImage: `url(${url(position)})`,
+            backgroundSize: "100% 100%",
+          }}
+        />
+      ))}
     </div>
-  );
-}
-
-function BootMenuItemSlice(props: {
-  position: string;
-  width: number;
-  height: number;
-  src: string;
-}) {
-  return (
-    <div
-      style={{
-        width: props.width,
-        height: props.height,
-        backgroundImage: `url(${props.src.replace("*", props.position)})`,
-        backgroundSize: "100% 100%",
-      }}
-    ></div>
   );
 }
