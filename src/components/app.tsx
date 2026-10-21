@@ -78,77 +78,82 @@ export default function App() {
   return (
     <>
       <header>
-        GRUB Theme Visualizer — edit the theme below or load a theme folder
+        <h1>GRUB Theme Visualizer</h1>
+        <p>Preview a GRUB2 theme before installing it.</p>
       </header>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-around",
-        }}
-      >
-        <div
-          id="controls"
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "flex-start",
-          }}
-        >
-          <label className="small">Theme folder (containing theme.txt):</label>
-          <input
-            type="file"
-            // @ts-expect-error non-standard directory picker attribute
-            webkitdirectory=""
-            onChange={(e) => void loadThemeFolder(e)}
-          />
-          <label className="small">GRUB configuration:</label>
-          <textarea
-            style={{ backgroundColor: "#9e9e9eff" }}
-            id="configuration"
-            rows={30}
-            cols={80}
-            value={configuration}
-            placeholder="Load a theme folder above, or paste a theme.txt here"
-            onChange={(e) => setConfiguration(e.target.value)}
-          ></textarea>
-          {warnings.length > 0 && (
-            <ul id="warnings" className="small">
-              {warnings.map((warning) => (
-                <li key={warning}>{warning}</li>
+      <main>
+        <aside id="controls">
+          <section>
+            <label htmlFor="themeFolder">Theme folder</label>
+            <input
+              id="themeFolder"
+              type="file"
+              // @ts-expect-error non-standard directory picker attribute
+              webkitdirectory=""
+              onChange={(e) => void loadThemeFolder(e)}
+            />
+            <span className="hint">
+              Pick the folder that contains theme.txt. Files stay in your
+              browser.
+            </span>
+          </section>
+          <section>
+            <label htmlFor="configuration">Configuration</label>
+            <textarea
+              id="configuration"
+              rows={22}
+              spellCheck={false}
+              value={configuration}
+              placeholder="Load a theme folder above, or paste a theme.txt here"
+              onChange={(e) => setConfiguration(e.target.value)}
+            ></textarea>
+            {warnings.length > 0 && (
+              <ul id="warnings">
+                {warnings.map((warning) => (
+                  <li key={warning}>{warning}</li>
+                ))}
+              </ul>
+            )}
+          </section>
+          <section>
+            <label htmlFor="osEntries">OS entries</label>
+            <textarea
+              id="osEntries"
+              rows={4}
+              spellCheck={false}
+              value={osEntriesText}
+              onChange={(e) => setOsEntriesText(e.target.value)}
+            ></textarea>
+            <span className="hint">
+              One per line. Use ↑ ↓ to move the selection.
+            </span>
+          </section>
+          <section>
+            <label htmlFor="screenSize">Screen size</label>
+            <select
+              id="screenSize"
+              value={screenSize}
+              onChange={(e) => setScreenSize(e.target.value)}
+            >
+              {screenSizeOptions.map((size) => (
+                <option key={size} value={size}>
+                  {size}
+                </option>
               ))}
-            </ul>
-          )}
-          <label className="small">OS Entries (one per line):</label>
-          <textarea
-            style={{ backgroundColor: "#9e9e9eff" }}
-            id="osEntries"
-            rows={4}
-            value={osEntriesText}
-            onChange={(e) => setOsEntriesText(e.target.value)}
-          ></textarea>
-          <label className="small">Screen:</label>
-          <select
-            id="screenSize"
-            value={screenSize}
-            onChange={(e) => setScreenSize(e.target.value)}
-          >
-            {screenSizeOptions.map((size) => (
-              <option key={size} value={size}>
-                {size}
-              </option>
-            ))}
-          </select>
-        </div>
+            </select>
+          </section>
+        </aside>
 
-        <AssetContext value={resolver}>
-          <GrubScreen
-            theme={theme}
-            osEntries={osEntries}
-            screenSize={calculateScreenSize(screenSize)}
-          />
-        </AssetContext>
-      </div>
+        <div className="preview">
+          <AssetContext value={resolver}>
+            <GrubScreen
+              theme={theme}
+              osEntries={osEntries}
+              screenSize={calculateScreenSize(screenSize)}
+            />
+          </AssetContext>
+        </div>
+      </main>
     </>
   );
 }
