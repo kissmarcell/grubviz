@@ -20,17 +20,18 @@ type Globals = {
   desktop_color?: string;
   terminal_box?: string;
   terminal_border?: string;
-  terminal_left?: number;
-  terminal_top?: number;
-  terminal_width?: number;
-  terminal_height?: number;
+  terminal_left?: string;
+  terminal_top?: string;
+  terminal_width?: string;
+  terminal_height?: string;
 };
 
 type CommonParams = {
+  /** raw GRUB values: "480", "30%", "50%-80" */
   left?: number | string;
   top?: number | string;
-  width?: number;
-  height?: number;
+  width?: number | string;
+  height?: number | string;
   screenSize: { width: number; height: number };
   id: string;
 };
@@ -45,12 +46,14 @@ type Font = {
 type ThemeArray = {
   globals: Globals;
   components: ComponentHolder[];
+  warnings: string[];
 };
 
 type ComponentHolder = {
   type: string;
   order: number;
   properties: { [key: string]: string };
+  children: ComponentHolder[];
 };
 
 export {
